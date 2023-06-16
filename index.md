@@ -28,16 +28,24 @@ In this step, you prepare your on-premises Enterprise Subordinate CA for cross-f
 In Step 5, you created and published the certificate template in the on-premises Enterprise Subordinate CA. To add enroll and auto-enroll permissions on the certificate template so that AWS Managed Microsoft AD Domain controllers can auto-enroll the certificate, complete the following steps.
 1.	Connect to the Subordinate CA using RDP with an on-premises CA admin.
 2.	Open the Run dialog box, enter certtmpl.msc, and select OK.
-3.	In the Certificate Templates Console window, right-click the LDAPoverSSL certificate template that was created in Step 5 and choose Properties.
-4.	Choose the Security tab and then choose Add.
+3.	In the Certificate Templates Console window, right-click Kerberos Authentication and choose Duplicate Template.
+    <img width="636" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/6579bf3e-5812-4821-b4a1-459b288f47d7">
+
+4.	The Properties of New Template window will pop up.
+    <img width="608" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/ce43f6d9-4ccb-4dc8-b479-c389146f34b6">
+    
+5. In the Properties of New Template window, switch to the General tab and change the Template display name to LDAPOverSSL.
+    <img width="600" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/af54f552-7e4e-4665-a6da-c418866ad092">
+
+6.	Now, choose the Security tab and then choose Add.
  
     <img width="270" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/72ecdbd4-340c-4f09-ac9f-8c0a6bba639a">
 
-5.	Change the location to the AWS Managed Microsoft AD domain. For Enter the object names to select, enter Domain Controllers, choose Check names, and then choose OK.
+7.	Change the location to the AWS Managed Microsoft AD domain. For Enter the object names to select, enter Domain Controllers, choose Check names, and then click OK.
  
     <img width="309" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/77ed323a-07e4-4984-9378-b9cab5707d1f">
 
-6.	On the Properties of New Template screen, choose the Security tab, and under Group or user names, select Domain controllers (amazondomains\Domain Controllers). In the Permissions for Domain Controllers section, check the boxes in the Allow column for Read, Enroll, and Autoenroll, choose Apply, and then choose OK.
+8.	On the Properties of New Template screen, choose the Security tab, and under Group or user names, select Domain controllers (amazondomains\Domain Controllers). In the Permissions for Domain Controllers section, check the boxes in the Allow column for Read, Enroll, and Autoenroll, choose Apply, and then choose OK.
 
     <img width="272" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/fde12294-adb7-4e94-9b6a-5c75f2d845c9">
  
