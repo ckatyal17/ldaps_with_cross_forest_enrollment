@@ -1,3 +1,4 @@
 remote_theme: pages-themes/cayman@v0.2.0
 plugins:
 - jekyll-remote-theme
+title: Enable Server Side LDAPS for AWS Managed Microsoft AD directory using your existing onpremise Microsoft PKI infrastructure.
