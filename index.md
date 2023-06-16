@@ -25,7 +25,7 @@ In this step, you prepare your on-premises Enterprise Subordinate CA for cross-f
 5.	net stop certsvc && net start certsvc
 
 ### Step 3: Create and publish the certificate template
-In Step 5, you created and published the certificate template in the on-premises Enterprise Subordinate CA. To add enroll and auto-enroll permissions on the certificate template so that AWS Managed Microsoft AD Domain controllers can auto-enroll the certificate, complete the following steps.
+In this step we are going to create and publish a new certificate template in the on-premises Enterprise Subordinate CA. We will also add enroll and auto-enroll permissions on the certificate template so that AWS Managed Microsoft AD Domain controllers can auto-enroll the certificate:
 1.	Connect to the Subordinate CA using RDP with an on-premises CA admin.
 2.	Open the Run dialog box, enter certtmpl.msc, and select OK.
 3.	In the Certificate Templates Console window, right-click Kerberos Authentication and choose Duplicate Template.
@@ -50,7 +50,7 @@ In Step 5, you created and published the certificate template in the on-premises
     <img width="272" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/fde12294-adb7-4e94-9b6a-5c75f2d845c9">
  
 ### Step 4: Configure AWS Managed Microsoft AD
-In Step 6d, you perform multiple operations to configure the amazondomains.com domain for cross-forest certificate enrollment.
+In Step 4, we perform multiple operations to configure the amazondomains.com domain for cross-forest certificate enrollment.
 
 #### Step 4.1: Add an on-premises Enterprise CA computer object in the Cert Publishers group of the amazondomains.com domain
 1.	Take RDP to the RSAT instance with the AWS Managed Microsoft AD Admin user.
@@ -155,7 +155,7 @@ Follow these steps to configure AWS security group rules:
     <img width="1451" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/7a55e57c-6b52-486d-9c6e-1460f9fe8e8c">
 
 You have completed the configuration of AWS security group rules to allow traffic between your directory domain controllers and SubordinateCA.
-The AWS Managed Microsoft AD domain controllers will automatically request a certificate based on the template created on the Microsoft Enterprise Subordinate CA in Step 5: Create a certificate template. It can take up to 30 minutes for the directory domain controllers to auto-enroll the available certificates. Once the certificates are issued to the directory domain controllers LDAPS will become functional. This completes the setup of LDAPS for the AWS Managed Microsoft AD directory. The LDAP service on the directory is now ready to accept LDAPS connections!
+The AWS Managed Microsoft AD domain controllers will automatically request a certificate based on the template created on the Microsoft Enterprise Subordinate CA in Step 3: Create and publish the certificate template. It can take up to 30 minutes for the directory domain controllers to auto-enroll the available certificates. Once the certificates are issued to the directory domain controllers LDAPS will become functional. This completes the setup of LDAPS for the AWS Managed Microsoft AD directory. The LDAP service on the directory is now ready to accept LDAPS connections!
 
 ### Step 6: Test LDAPS access by using the LDP tool
 In this step, you test the LDAPS connection to the AWS Managed Microsoft AD directory by using the LDP tool. The LDP tool is available on the Management machine where you installed Active Directory Administration Tools. Before you test the LDAPS connection, you must wait up to 30 minutes for the Microsoft Enterprise Subordinate CA to issue a certificate to your domain controllers.
