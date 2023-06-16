@@ -71,9 +71,9 @@ In Step 6d, you perform multiple operations to configure the amazondomains.com d
 #### Step 4.3: Publish the Root CA certificate in AWS Managed Microsoft AD
 1.	Take RDP to the RSAT instance with the Admin user.
 2.	Download the Root CA certificate from the S3 bucket by following the documentation in Downloading an object, and then save the certificates in a new folder named c:\certconfig.
-3.	To publish the certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace placeholder values with your values.
-4.	certutil -dspublish -f root-ca-cert-filename.cer RootCA
-5.	certutil -addstore -f root root-ca-cert-filename.crt
+3.	To publish the certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace ```<placeholder values>``` with your values.
+4.	certutil -dspublish -f ```<root-ca-cert-filename.cer>``` RootCA
+5.	certutil -addstore -f root ```<root-ca-cert-filename.crt>```
 
 For the example in this post, I ran the following commands:
 ```
