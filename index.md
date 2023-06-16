@@ -31,7 +31,7 @@ In Step 5, you created and published the certificate template in the on-premises
 3.	In the Certificate Templates Console window, right-click the LDAPoverSSL certificate template that was created in Step 5 and choose Properties.
 4.	Choose the Security tab and then choose Add.
  
-<img width="270" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/72ecdbd4-340c-4f09-ac9f-8c0a6bba639a">
+    <img width="270" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/72ecdbd4-340c-4f09-ac9f-8c0a6bba639a">
 
 5.	Change the location to the AWS Managed Microsoft AD domain. For Enter the object names to select, enter Domain Controllers, choose Check names, and then choose OK.
  
