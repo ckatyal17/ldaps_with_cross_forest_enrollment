@@ -83,11 +83,11 @@ certutil -addstore -f root c:\certconfig\RootCA_RootCA.crt
 
 #### Step 4.4: Publish the Subordinate CA certificate in AWS Managed Microsoft AD
 1.	Take RDP to the RSAT instance with the Admin user.
-2.	To publish the Subordinate CA certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace placeholder values with your values.
-3.	certutil -config Computer-Name>\<Enterprise-CA-Name -ca.cert enterprise-ca-cert-filename.cer
-4.	certutil -addstore -f CA enterprise-ca-cert-filename.cer
-5.	certutil -dspublish -f enterprise-ca-cert-filename.cer NTAuthCA
-6.	certutil -dspublish -f enterprise-ca-cert-filename.cer SubCA
+2.	To publish the Subordinate CA certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace ```<placeholder values>``` with your values.
+3.	certutil -config ```<Computer-Name>\<Enterprise-CA-Name>``` -ca.cert ```<enterprise-ca-cert-filename.cer>```
+4.	certutil -addstore -f CA ```<enterprise-ca-cert-filename.cer>```
+5.	certutil -dspublish -f ```<enterprise-ca-cert-filename.cer>``` NTAuthCA
+6.	certutil -dspublish -f ```<enterprise-ca-cert-filename.cer>``` SubCA
 
 For the example in this post, I ran the following commands:
 ```
@@ -106,23 +106,23 @@ certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
 6.	Open Powershell as an administrator and run the following command.
 7.	Set-Location C:\Certconfig
 
-#### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace placeholder values with your values.
-.\PKISync.ps1 -sourceforest onremDomain.com -targetforest managedAD.com -type Template -cn certTemplateName -f
+#### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace ```<placeholder values>``` with your values.
+.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>`` -targetforest ```<AWS managed AD domain DNS>``` -type Template -cn ```<certificate template common name>``` -f
 
 For the example in this post, I ran the following command:
 ```
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type Template -cn LDAPoverSSL -f
 ```
-#### Step 4.7: To copy the OID from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace placeholder values with your values.
-.\PKISync.ps1 -sourceforest onremDomain.com -targetforest managedAD.com -type Oid -f
+#### Step 4.7: To copy the OID from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace ```<placeholder values>``` with your values.
+.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>``` -targetforest ```<AWS managed AD domain DNS>``` -type Oid -f
 
 For the example in this post, I ran the following command:
 ```
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type Oid -f
 ```
 
-#### Step 4.8: To copy the Enterprise CA object from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace placeholder values with your values.
-.\PKISync.ps1 -sourceforest onremDomain.com -targetforest managedAD.com -type CA -cn enterpriseCAName
+#### Step 4.8: To copy the Enterprise CA object from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace ```<placeholder values>``` with your values.
+.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>`` -targetforest ```<AWS managed AD domain DNS>``` -type CA -cn ```<enterprise CA name sanitized>```
 
 For the example in this post, I ran the following command:
 ```
