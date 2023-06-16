@@ -35,11 +35,11 @@ In Step 5, you created and published the certificate template in the on-premises
 
 5.	Change the location to the AWS Managed Microsoft AD domain. For Enter the object names to select, enter Domain Controllers, choose Check names, and then choose OK.
  
-<img width="309" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/77ed323a-07e4-4984-9378-b9cab5707d1f">
+    <img width="309" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/77ed323a-07e4-4984-9378-b9cab5707d1f">
 
 6.	On the Properties of New Template screen, choose the Security tab, and under Group or user names, select Domain controllers (amazondomains\Domain Controllers). In the Permissions for Domain Controllers section, check the boxes in the Allow column for Read, Enroll, and Autoenroll, choose Apply, and then choose OK.
 
-<img width="272" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/fde12294-adb7-4e94-9b6a-5c75f2d845c9">
+    <img width="272" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/fde12294-adb7-4e94-9b6a-5c75f2d845c9">
  
 ### Step 4: Configure AWS Managed Microsoft AD
 In Step 6d, you perform multiple operations to configure the amazondomains.com domain for cross-forest certificate enrollment.
@@ -49,18 +49,18 @@ In Step 6d, you perform multiple operations to configure the amazondomains.com d
 2.	Open the Run dialog box, enter dsa.msc, and choose OK.
 3.	Navigate to amazondomains.com > Users, right click the group named Cert Publishers, and select Properties.
 
-<img width="507" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/72c9be02-c489-497a-97d0-cd15b35f26ad">
+    <img width="507" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/72c9be02-c489-497a-97d0-cd15b35f26ad">
  
 4.	In the Cert Publishers Properties box, choose the Members tab and then choose Add.
 
-<img width="375" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/f0809349-fa12-4e0a-bfd3-fbc655ff7fab">
+    <img width="375" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/f0809349-fa12-4e0a-bfd3-fbc655ff7fab">
 
 5.	In the Select Users, Computers, Service Accounts, or Groups box, provide the following details:
 *	For Select this object type, choose Object Types, and then choose Computers.
 *	For From this location, choose Locations and then choose onprem.example.com.
 *	For Enter the object names to select, enter the name of the computer where the Subordinate CA is installed, select Check Names, and then select OK.
 
-<img width="310" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/067f5700-fcc0-4413-9bd1-89ceeef8c25a">
+    <img width="310" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/067f5700-fcc0-4413-9bd1-89ceeef8c25a">
  
 6.	Choose Apply and then choose OK.
 
@@ -123,12 +123,12 @@ Follow these steps to configure AWS security group rules:
 5.	Switch to the Inbound tab and choose Edit.
 6.	Choose Add Rule. Choose All traffic for Type and Custom for Source. Enter your directory’s AWS security group (in this case, sg-4ba7682d) in the Source box. Choose Save.
 
-<img width="1457" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/16e77bbc-d015-4ab8-ac9d-c17d2dd427b6">
+    <img width="1457" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/16e77bbc-d015-4ab8-ac9d-c17d2dd427b6">
 
 7.	Now choose the AWS security group (in this case, sg-4ba7682d) of your AWS Managed Microsoft AD directory, switch to the Outbound tab, and choose Edit.
 8.	Choose Add Rule. Choose All traffic for Type and Custom for Destination. Enter your directory’s AWS security group (in this case, sg-6fbe7109) in the Destination box. Choose Save.
 
-<img width="1451" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/7a55e57c-6b52-486d-9c6e-1460f9fe8e8c">
+    <img width="1451" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/7a55e57c-6b52-486d-9c6e-1460f9fe8e8c">
 
 You have completed the configuration of AWS security group rules to allow traffic between your directory domain controllers and SubordinateCA.
 The AWS Managed Microsoft AD domain controllers will automatically request a certificate based on the template created on the Microsoft Enterprise Subordinate CA in Step 5: Create a certificate template. It can take up to 30 minutes for the directory domain controllers to auto-enroll the available certificates. Once the certificates are issued to the directory domain controllers LDAPS will become functional. This completes the setup of LDAPS for the AWS Managed Microsoft AD directory. The LDAP service on the directory is now ready to accept LDAPS connections!
@@ -140,22 +140,22 @@ To test LDAPS, you connect to one of the domain controllers using port 636. Here
 2.	Launch the Microsoft Windows Server Manager on Management and navigate to Tools > Active Directory Users and Computers.
 3.	Switch to the tree view and navigate to corp.example.com > CORP > Domain Controllers. In the right pane, right-click on one of the domain controllers and choose Properties. Copy the DNS name of the domain controller.
 
-<img width="764" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/cd84d406-a762-4375-85e4-c6a5aacc5271">
+    <img width="764" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/cd84d406-a762-4375-85e4-c6a5aacc5271">
 
 4.	Launch the LDP.exe tool by launching Windows PowerShell and running the LDP.exe command.
 
-<img width="647" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/2af9c2b5-35a2-4fbb-904c-2bf4ca573845">
+    <img width="647" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/2af9c2b5-35a2-4fbb-904c-2bf4ca573845">
 
 5.	In the LDP tool, choose Connection > Connect.
 
-<img width="580" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/613e18a9-bb76-4962-b694-fb9580c0b0d2">
+    <img width="580" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/613e18a9-bb76-4962-b694-fb9580c0b0d2">
 
 6.	In the Server box, paste the DNS name you copied in Step 2. Type 636 in the Port box. Choose OK to test the LDAPS connection to port 636 of your directory.
 
-<img width="582" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/82d8f6c6-f0bd-40e3-bb07-7cfefa9f6d69">
+    <img width="582" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/82d8f6c6-f0bd-40e3-bb07-7cfefa9f6d69">
 
 7.	You should see the following message to confirm that your LDAPS connection is now open.
 
-<img width="676" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/2fcf0d47-7345-4d11-a2fe-b0de37a0201c">
+    <img width="676" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/2fcf0d47-7345-4d11-a2fe-b0de37a0201c">
 
 You have completed the setup of LDAPS for your AWS Managed Microsoft AD directory! You can now encrypt LDAP communications between your Windows and Linux applications and your AWS Managed Microsoft AD directory using LDAPS.
