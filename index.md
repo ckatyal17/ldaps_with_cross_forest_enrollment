@@ -107,7 +107,7 @@ certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
 7.	Set-Location C:\Certconfig
 
 #### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace ```<placeholder values>``` with your values.
-.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>`` -targetforest ```<AWS managed AD domain DNS>``` -type Template -cn ```<certificate template common name>``` -f
+.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>``` -targetforest ```<AWS managed AD domain DNS>``` -type Template -cn ```<certificate template common name>``` -f
 
 For the example in this post, I ran the following command:
 ```
@@ -122,7 +122,7 @@ For the example in this post, I ran the following command:
 ```
 
 #### Step 4.8: To copy the Enterprise CA object from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace ```<placeholder values>``` with your values.
-.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>`` -targetforest ```<AWS managed AD domain DNS>``` -type CA -cn ```<enterprise CA name sanitized>```
+.\PKISync.ps1 -sourceforest ```<onPrem domain DNS>``` -targetforest ```<AWS managed AD domain DNS>``` -type CA -cn ```<enterprise CA name sanitized>```
 
 For the example in this post, I ran the following command:
 ```
