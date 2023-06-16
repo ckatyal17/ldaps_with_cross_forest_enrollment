@@ -4,7 +4,7 @@ In this post, I'm going to show you how to enable server-side LDAPS for your AWS
 1.	An existing self-managed Active Directory environment with [two-tier Microsoft PKI infrastructure](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/hh831348(v%3Dws.11)).
 2.	An existing two-way [forest trust](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_tutorial_setup_trust.html) between AWS Managed Microsoft AD and your self-managed AD.
 
-## Use your existing on-premises Microsoft PKI infrastructure to enable LDAPs on AWS Managed Microsoft AD:
+## Steps to use your existing on-premises Microsoft PKI infrastructure to enable LDAPS on AWS Managed Microsoft AD:
 
 ### Step 1: Configure your on-premises firewall
 You must configure your on-premises firewall so that the following ports are open to the CIDRs for all subnets used by the VPC that contains your AWS Managed Microsoft AD and also from the private IP of the RSAT instance that you are going to use to manage the AWS Managed Microsoft AD.
