@@ -54,7 +54,8 @@ In Step 6d, you perform multiple operations to configure the amazondomains.com d
 *	For Select this object type, choose Object Types, and then choose Computers.
 *	For From this location, choose Locations and then choose onprem.example.com.
 *	For Enter the object names to select, enter the name of the computer where the Subordinate CA is installed, select Check Names, and then select OK.
- <img width="310" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/067f5700-fcc0-4413-9bd1-89ceeef8c25a">
+
+<img width="310" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/067f5700-fcc0-4413-9bd1-89ceeef8c25a">
  
 6.	Choose Apply and then choose OK.
 
