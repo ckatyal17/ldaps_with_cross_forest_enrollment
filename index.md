@@ -1,5 +1,3 @@
-# Enable Server Side LDAPS for AWS Managed Microsoft AD directory using your existing onpremise Microsoft PKI infrastructure.
-
 ## In this post, I'm going to show you how to enable server-side LDAPS for your AWS Managed Microsoft AD directory using your existing onpremise Microsoft PKI infrastructure (cross-forest certificate enrolment).
 
 ### Use your existing on-premises Microsoft PKI infrastructure to enable LDAPs on AWS Managed Microsoft AD:
