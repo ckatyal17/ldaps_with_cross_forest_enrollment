@@ -74,9 +74,12 @@ In Step 6d, you perform multiple operations to configure the amazondomains.com d
 3.	To publish the certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace <placeholder values> with your values.
 4.	certutil -dspublish -f <root-ca-cert-filename.cer> RootCA
 5.	certutil -addstore -f root <root-ca-cert-filename.crt>
+
 For the example in this post, I ran the following commands:
+```
 certutil -dspublish -f c:\certconfig\RootCA_RootCA.crt RootCA
 certutil -addstore -f root c:\certconfig\RootCA_RootCA.crt
+```
 
 #### Step 4.4: Publish the Subordinate CA certificate in AWS Managed Microsoft AD
 1.	Take RDP to the RSAT instance with the Admin user.
@@ -85,11 +88,14 @@ certutil -addstore -f root c:\certconfig\RootCA_RootCA.crt
 4.	certutil -addstore -f CA <enterprise-ca-cert-filename.cer>
 5.	certutil -dspublish -f <enterprise-ca-cert-filename.cer> NTAuthCA
 6.	certutil -dspublish -f <enterprise-ca-cert-filename.cer> SubCA
+
 For the example in this post, I ran the following commands:
+```
 certutil -config SubordinateCA.onprem.example.com\onPremSubordinateCA -ca.cert c:\certconfig\subcacert.cer
 certutil -addstore -f CA c:\certconfig\subcacert.cer 
 certutil -dspublish -f c:\certconfig\subcacert.cer NTAuthCA
 certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
+```
 
 #### Step 4.5: Download and run the PKIsync script from Microsoft to sync CA objects from the on-premises AD to AWS Managed Microsoft AD.
 1.	Download the PKISync.ps1 script from Microsoft.
@@ -102,16 +108,26 @@ certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
 
 #### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
 .\PKISync.ps1 -sourceforest <onPrem domain DNS> -targetforest <AWS managed AD domain DNS> -type Template -cn <certificate template common name> -f
+
 For the example in this post, I ran the following command:
+```
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type Template -cn LDAPoverSSL -f
-Step 6d-7: To copy the OID from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
+```
+#### Step 4.7: To copy the OID from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
 .\PKISync.ps1 -sourceforest <onPrem domain DNS> -targetforest <AWS managed AD domain DNS> -type Oid -f
+
 For the example in this post, I ran the following command:
+```
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type Oid -f
-Step 6d-8: To copy the Enterprise CA object from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
+```
+
+#### Step 4.8: To copy the Enterprise CA object from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
 .\PKISync.ps1 -sourceforest <onPrem domain DNS> -targetforest <AWS managed AD domain DNS> -type CA -cn <enterprise CA sanitized>
+
 For the example in this post, I ran the following command:
+```
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type CA -cn onPremSubordinateCA -f
+```
 
 ### Step 5: Configure AWS security group rules
 In this step, you configure AWS security group rules so that your directory domain controllers can connect to the Subordinate CA to request a certificate. To do this, you must add outbound rules to your directory’s AWS security group (in this case, sg-014fee4c22b6ff511) to allow all outbound traffic to SubordinateCA’s AWS security group (in this case, sg-06693e3b64a7e32f4 ) so that your directory domain controllers can connect to SubordinateCA for requesting a certificate. You also must add inbound rules to SubordinateCA’s AWS security group to allow all incoming traffic from your directory’s AWS security group so that the Subordinate CA can accept incoming traffic from your directory domain controllers.
