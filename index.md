@@ -1,11 +1,12 @@
-## In this post, I'm going to show you how to enable server-side LDAPS for your AWS Managed Microsoft AD directory using your existing onpremise Microsoft PKI infrastructure (cross-forest certificate enrolment).
+In this post, I'm going to show you how to enable server-side LDAPS for your AWS Managed Microsoft AD directory using your existing onpremise Microsoft PKI infrastructure (cross-forest certificate enrolment).
 
-### Use your existing on-premises Microsoft PKI infrastructure to enable LDAPs on AWS Managed Microsoft AD:
-#### Prerequisites
+## Prerequisites
 1.	An existing self-managed Active Directory environment with [two-tier Microsoft PKI infrastructure](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/hh831348(v%3Dws.11)).
 2.	An existing two-way [forest trust](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_tutorial_setup_trust.html) between AWS Managed Microsoft AD and your self-managed AD.
 
-#### Step 1: Configure your on-premises firewall
+## Use your existing on-premises Microsoft PKI infrastructure to enable LDAPs on AWS Managed Microsoft AD:
+
+### Step 1: Configure your on-premises firewall
 You must configure your on-premises firewall so that the following ports are open to the CIDRs for all subnets used by the VPC that contains your AWS Managed Microsoft AD and also from the private IP of the RSAT instance that you are going to use to manage the AWS Managed Microsoft AD.
 
 *	TCP 135 (RPC)
@@ -15,7 +16,7 @@ You must configure your on-premises firewall so that the following ports are ope
 * TCP/UDP 389 (LDAP)
 * TCP 445 (SMB)
 
-#### Step 2: Prepare your on-premises CA
+### Step 2: Prepare your on-premises CA
 In this step, you prepare your on-premises Enterprise Subordinate CA for cross-forest certificate enrollment by enabling LDAP referral.
 1.	Log in to your on-premises Enterprise CA.
 2.	Open a command prompt as an administrator and run the following command:
@@ -23,7 +24,7 @@ In this step, you prepare your on-premises Enterprise Subordinate CA for cross-f
 4.	To restart the certificate service, run the following command:
 5.	net stop certsvc && net start certsvc
 
-#### Step 3: Create and publish the certificate template
+### Step 3: Create and publish the certificate template
 In Step 5, you created and published the certificate template in the on-premises Enterprise Subordinate CA. To add enroll and auto-enroll permissions on the certificate template so that AWS Managed Microsoft AD Domain controllers can auto-enroll the certificate, complete the following steps.
 1.	Connect to the Subordinate CA using RDP with an on-premises CA admin.
 2.	Open the Run dialog box, enter certtmpl.msc, and select OK.
@@ -40,10 +41,10 @@ In Step 5, you created and published the certificate template in the on-premises
 
 <img width="272" alt="image" src="https://github.com/ckatyal17/ldaps_with_cross_forest_enrollment/assets/68083582/fde12294-adb7-4e94-9b6a-5c75f2d845c9">
  
-#### Step 4: Configure AWS Managed Microsoft AD
+### Step 4: Configure AWS Managed Microsoft AD
 In Step 6d, you perform multiple operations to configure the amazondomains.com domain for cross-forest certificate enrollment.
 
-##### Step 4.1: Add an on-premises Enterprise CA computer object in the Cert Publishers group of the amazondomains.com domain
+#### Step 4.1: Add an on-premises Enterprise CA computer object in the Cert Publishers group of the amazondomains.com domain
 1.	Take RDP to the RSAT instance with the AWS Managed Microsoft AD Admin user.
 2.	Open the Run dialog box, enter dsa.msc, and choose OK.
 3.	Navigate to amazondomains.com > Users, right click the group named Cert Publishers, and select Properties.
@@ -63,11 +64,11 @@ In Step 6d, you perform multiple operations to configure the amazondomains.com d
  
 6.	Choose Apply and then choose OK.
 
-##### Step 4.2: Share the Root CA certificate with the RSAT instance
+#### Step 4.2: Share the Root CA certificate with the RSAT instance
 1.	Take RDP to the on-premises server where the Root CA is configured as a local administrator of the server.
 2.	Upload the Root CA certificate (.crt files) from the c:\windows\system32\certsrv\certnroll folder to the S3 bucket created in Step 2 by following the steps in Uploading objects.
 
-##### Step 4.3: Publish the Root CA certificate in AWS Managed Microsoft AD
+#### Step 4.3: Publish the Root CA certificate in AWS Managed Microsoft AD
 1.	Take RDP to the RSAT instance with the Admin user.
 2.	Download the Root CA certificate from the S3 bucket by following the documentation in Downloading an object, and then save the certificates in a new folder named c:\certconfig.
 3.	To publish the certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace <placeholder values> with your values.
@@ -77,7 +78,7 @@ For the example in this post, I ran the following commands:
 certutil -dspublish -f c:\certconfig\RootCA_RootCA.crt RootCA
 certutil -addstore -f root c:\certconfig\RootCA_RootCA.crt
 
-##### Step 4.4: Publish the Subordinate CA certificate in AWS Managed Microsoft AD
+#### Step 4.4: Publish the Subordinate CA certificate in AWS Managed Microsoft AD
 1.	Take RDP to the RSAT instance with the Admin user.
 2.	To publish the Subordinate CA certificate in the amazondomains.com domain, open the command prompt as an administrator and run the following commands. Replace <placeholder values> with your values.
 3.	certutil -config <Computer-Name>\<Enterprise-CA-Name> -ca.cert <enterprise-ca-cert-filename.cer>
@@ -90,7 +91,7 @@ certutil -addstore -f CA c:\certconfig\subcacert.cer
 certutil -dspublish -f c:\certconfig\subcacert.cer NTAuthCA
 certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
 
-##### Step 4.5: Download and run the PKIsync script from Microsoft to sync CA objects from the on-premises AD to AWS Managed Microsoft AD.
+#### Step 4.5: Download and run the PKIsync script from Microsoft to sync CA objects from the on-premises AD to AWS Managed Microsoft AD.
 1.	Download the PKISync.ps1 script from Microsoft.
 2.	At the top of the code section, select Copy code.
 3.	In Notepad or a similar text editor, paste the code, and save the file with the name PKISync.ps1.
@@ -99,7 +100,7 @@ certutil -dspublish -f c:\certconfig\subcacert.cer SubCA
 6.	Open Powershell as an administrator and run the following command.
 7.	Set-Location C:\Certconfig
 
-##### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
+#### Step 4.6: To copy the certificate template from the on-premises domain to AWS Managed Microsoft AD, run the following command. Replace <placeholder values> with your values.
 .\PKISync.ps1 -sourceforest <onPrem domain DNS> -targetforest <AWS managed AD domain DNS> -type Template -cn <certificate template common name> -f
 For the example in this post, I ran the following command:
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type Template -cn LDAPoverSSL -f
@@ -112,7 +113,7 @@ Step 6d-8: To copy the Enterprise CA object from the on-premises domain to AWS M
 For the example in this post, I ran the following command:
 .\PKISync.ps1 -sourceforest onprem.example.com -targetforest amazondomains.com -type CA -cn onPremSubordinateCA -f
 
-#### Step 5: Configure AWS security group rules
+### Step 5: Configure AWS security group rules
 In this step, you configure AWS security group rules so that your directory domain controllers can connect to the Subordinate CA to request a certificate. To do this, you must add outbound rules to your directory’s AWS security group (in this case, sg-014fee4c22b6ff511) to allow all outbound traffic to SubordinateCA’s AWS security group (in this case, sg-06693e3b64a7e32f4 ) so that your directory domain controllers can connect to SubordinateCA for requesting a certificate. You also must add inbound rules to SubordinateCA’s AWS security group to allow all incoming traffic from your directory’s AWS security group so that the Subordinate CA can accept incoming traffic from your directory domain controllers.
 Follow these steps to configure AWS security group rules:
 1.	Log in to the Management instance as Admin.
@@ -132,7 +133,7 @@ Follow these steps to configure AWS security group rules:
 You have completed the configuration of AWS security group rules to allow traffic between your directory domain controllers and SubordinateCA.
 The AWS Managed Microsoft AD domain controllers will automatically request a certificate based on the template created on the Microsoft Enterprise Subordinate CA in Step 5: Create a certificate template. It can take up to 30 minutes for the directory domain controllers to auto-enroll the available certificates. Once the certificates are issued to the directory domain controllers LDAPS will become functional. This completes the setup of LDAPS for the AWS Managed Microsoft AD directory. The LDAP service on the directory is now ready to accept LDAPS connections!
 
-#### Step 6: Test LDAPS access by using the LDP tool
+### Step 6: Test LDAPS access by using the LDP tool
 In this step, you test the LDAPS connection to the AWS Managed Microsoft AD directory by using the LDP tool. The LDP tool is available on the Management machine where you installed Active Directory Administration Tools. Before you test the LDAPS connection, you must wait up to 30 minutes for the Microsoft Enterprise Subordinate CA to issue a certificate to your domain controllers.
 To test LDAPS, you connect to one of the domain controllers using port 636. Here are the steps to test the LDAPS connection:
 1.	Log in to Management as Admin.
